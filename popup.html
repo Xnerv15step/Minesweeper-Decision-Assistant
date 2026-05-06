@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Minesweeper Assistant</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: rgba(255, 255, 255, 0.06);
+        --text: #e5e7eb;
+        --muted: rgba(229, 231, 235, 0.72);
+        --line: rgba(255, 255, 255, 0.10);
+        --btn: rgba(255, 255, 255, 0.10);
+        --btnHover: rgba(255, 255, 255, 0.14);
+        --accent: rgba(234, 179, 8, 0.95);
+      }
+      body {
+        margin: 0;
+        width: 320px;
+        background: var(--bg);
+        color: var(--text);
+        font: 12px/1.4 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      }
+      .wrap {
+        padding: 10px;
+      }
+      .title {
+        font-weight: 800;
+        font-size: 13px;
+        margin-bottom: 8px;
+        letter-spacing: 0.2px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .row:last-child {
+        margin-bottom: 0;
+      }
+      label {
+        color: var(--muted);
+      }
+      input[type="number"] {
+        width: 96px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--line);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 6px 8px;
+        outline: none;
+      }
+      .btnRow {
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        flex: 1;
+        border: 1px solid var(--line);
+        background: var(--btn);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 9px 10px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+      button:hover {
+        background: var(--btnHover);
+      }
+      .primary {
+        border-color: rgba(234, 179, 8, 0.35);
+        background: rgba(234, 179, 8, 0.18);
+      }
+      .primary:hover {
+        background: rgba(234, 179, 8, 0.24);
+      }
+      .hint {
+        margin-top: 6px;
+        color: var(--muted);
+      }
+      .hint code {
+        color: rgba(234, 179, 8, 0.95);
+      }
+      .status {
+        margin-top: 8px;
+        color: var(--muted);
+        min-height: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="title">Minesweeper Decision Assistant</div>
+
+      <div class="card">
+        <div class="btnRow">
+          <button id="run" class="primary">顯示建議</button>
+          <button id="clear">清除提示</button>
+        </div>
+        <div class="hint">快捷鍵：<code>Alt+M</code></div>
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <label for="suggestions">建議顯示幾格</label>
+          <input id="suggestions" type="number" min="1" max="10" step="1" />
+        </div>
+        <div class="row">
+          <label for="maxVars">旗子檢查強度</label>
+          <input id="maxVars" type="number" min="12" max="40" step="1" />
+        </div>
+        <div class="row">
+          <label for="timeBudgetMs">每次檢查上限 (ms)</label>
+          <input id="timeBudgetMs" type="number" min="30" max="800" step="10" />
+        </div>
+        <div class="hint">「旗子檢查」越高越準，但越可能變慢。</div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
+
