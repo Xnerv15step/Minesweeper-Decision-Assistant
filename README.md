@@ -1,4 +1,5 @@
 ﻿# Minesweeper Decision Assistant
+<img width="1280" height="800" alt="Screenshot_20260506183427" src="https://github.com/user-attachments/assets/82798109-c106-4ba9-83ea-6beea8b35027" />
 
 Chrome Extension（Manifest V3）for **minesweeperonline.com**：
 當你玩到中盤遇到必猜局面時，手動一鍵計算並標示下一步建議，
