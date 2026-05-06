@@ -63,7 +63,3 @@ Chrome Extension（Manifest V3）for **minesweeperonline.com**：
 - 「確定插錯旗」在大型邊界區域可能會因為效能限制而改為局部檢查，或在時間上限內無法完成。
   此時側欄會提示「資訊不足/超時跳過」，不會硬判。
 
-## License
-
-尚未選定授權條款。
-若你準備上架商店或開源分享，建議加入 `LICENSE`（例如 MIT）。
