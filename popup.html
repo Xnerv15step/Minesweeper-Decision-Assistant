@@ -1,134 +1,51 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Minesweeper Assistant</title>
-    <style>
-      :root {
-        --bg: #0b1220;
-        --card: rgba(255, 255, 255, 0.06);
-        --text: #e5e7eb;
-        --muted: rgba(229, 231, 235, 0.72);
-        --line: rgba(255, 255, 255, 0.10);
-        --btn: rgba(255, 255, 255, 0.10);
-        --btnHover: rgba(255, 255, 255, 0.14);
-        --accent: rgba(234, 179, 8, 0.95);
-      }
-      body {
-        margin: 0;
-        width: 320px;
-        background: var(--bg);
-        color: var(--text);
-        font: 12px/1.4 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      }
-      .wrap {
-        padding: 10px;
-      }
-      .title {
-        font-weight: 800;
-        font-size: 13px;
-        margin-bottom: 8px;
-        letter-spacing: 0.2px;
-      }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 10px;
-      }
-      .row {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-      }
-      .row:last-child {
-        margin-bottom: 0;
-      }
-      label {
-        color: var(--muted);
-      }
-      input[type="number"] {
-        width: 96px;
-        background: rgba(0, 0, 0, 0.35);
-        border: 1px solid var(--line);
-        color: var(--text);
-        border-radius: 8px;
-        padding: 6px 8px;
-        outline: none;
-      }
-      .btnRow {
-        display: flex;
-        gap: 8px;
-      }
-      button {
-        flex: 1;
-        border: 1px solid var(--line);
-        background: var(--btn);
-        color: var(--text);
-        border-radius: 10px;
-        padding: 9px 10px;
-        cursor: pointer;
-        font-weight: 700;
-      }
-      button:hover {
-        background: var(--btnHover);
-      }
-      .primary {
-        border-color: rgba(234, 179, 8, 0.35);
-        background: rgba(234, 179, 8, 0.18);
-      }
-      .primary:hover {
-        background: rgba(234, 179, 8, 0.24);
-      }
-      .hint {
-        margin-top: 6px;
-        color: var(--muted);
-      }
-      .hint code {
-        color: rgba(234, 179, 8, 0.95);
-      }
-      .status {
-        margin-top: 8px;
-        color: var(--muted);
-        min-height: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <div class="title">Minesweeper Decision Assistant</div>
+{
+// 擴充功能清單版本，目前 Chrome 強制規定必須使用 V3
+"manifest_version": 3,
 
-      <div class="card">
-        <div class="btnRow">
-          <button id="run" class="primary">顯示建議</button>
-          <button id="clear">清除提示</button>
-        </div>
-        <div class="hint">快捷鍵：<code>Alt+M</code></div>
-        <div id="status" class="status"></div>
-      </div>
+// 插件名稱與版本號
+"name": "Minesweeper Decision Assistant",
+"version": "2.0",
 
-      <div class="card">
-        <div class="row">
-          <label for="suggestions">建議顯示幾格</label>
-          <input id="suggestions" type="number" min="1" max="10" step="1" />
-        </div>
-        <div class="row">
-          <label for="maxVars">旗子檢查強度</label>
-          <input id="maxVars" type="number" min="12" max="40" step="1" />
-        </div>
-        <div class="row">
-          <label for="timeBudgetMs">每次檢查上限 (ms)</label>
-          <input id="timeBudgetMs" type="number" min="30" max="800" step="10" />
-        </div>
-        <div class="hint">「旗子檢查」越高越準，但越可能變慢。</div>
-      </div>
-    </div>
+// 權限設定
+"permissions": [
+"activeTab", // 允許插件訪問當前使用者正在操作的標籤頁
+"scripting", // 允許執行 chrome.scripting.executeScript 來注入 solver.js
+"storage" // 允許插件存儲數據（如果未來需要紀錄勝率或設定值的話）
+],
 
-    <script src="popup.js"></script>
-  </body>
-</html>
+// 後台腳本設定
+"background": {
+// 定義 Service Worker 檔案，負責監聽快捷鍵與圖標點擊
+"service_worker": "background.js"
+},
 
+// 瀏覽器工具列行為
+"action": {
+"default_title": "Suggest next move", // 滑鼠懸停在圖示時顯示的文字
+"default_popup": "popup.html", // 點擊圖示後彈出的介面視窗
+"default_icon": { // 工具列顯示的圖示路徑
+"16": "icons/icon16.png",
+"32": "icons/icon32.png",
+"48": "icons/icon48.png",
+"128": "icons/icon128.png"
+}
+},
+
+// 擴充功能管理頁面 (chrome://extensions) 顯示的圖示
+"icons": {
+"16": "icons/icon16.png",
+"32": "icons/icon32.png",
+"48": "icons/icon48.png",
+"128": "icons/icon128.png"
+},
+
+// 快捷鍵指令設定
+"commands": {
+"run-solver": {
+"suggested_key": {
+"default": "Alt+M" // 預設啟動快捷鍵為 Alt + M
+},
+"description": "Suggest next Minesweeper move" // 在快捷鍵設定頁面顯示的描述
+}
+}
+}
